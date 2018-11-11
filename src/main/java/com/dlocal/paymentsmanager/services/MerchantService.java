@@ -21,7 +21,7 @@ public class MerchantService {
     @Autowired
     private HTTPPoolService httpPoolService;
 
-    public Boolean existsMerchant (String merchantId) throws IOException {
+    public Boolean existsMerchant (String merchantId) {
         HttpResponse response = null;
         try {
             HttpGet get = new HttpGet(buildGetMerchantURL(merchantId));
