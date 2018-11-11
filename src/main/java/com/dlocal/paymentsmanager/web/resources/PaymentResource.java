@@ -15,6 +15,7 @@ import java.util.Optional;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "payments")
 @Path("/payments")
+@Produces(MediaType.APPLICATION_JSON)
 public class PaymentResource {
 
     @Autowired
@@ -41,7 +42,8 @@ public class PaymentResource {
 
     @POST
     @Path("/")
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addPayment(com.dlocal.paymentsmanager.web.model.Payment payment) {
         com.dlocal.paymentsmanager.web.model.Payment paymentFEModel = new com.dlocal.paymentsmanager.web.model.Payment();
         paymentFEModel.setId(1234);

@@ -2,6 +2,7 @@ package com.dlocal.paymentsmanager.datastore.models;
 
 import com.dlocal.paymentsmanager.datastore.PaymentStatus;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Payment {
 
@@ -18,6 +19,7 @@ public class Payment {
 
     public String merchantId;
 
+    @Indexed
     public PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
     public Double amountUSD;
