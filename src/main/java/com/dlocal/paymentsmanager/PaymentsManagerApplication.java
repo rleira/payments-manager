@@ -1,7 +1,6 @@
 package com.dlocal.paymentsmanager;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
@@ -24,11 +23,11 @@ public class PaymentsManagerApplication extends SpringBootServletInitializer {
 		JettyServletWebServerFactory factory = new JettyServletWebServerFactory();
 		factory.setContextPath("/api");
 		factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/notfound.html"));
+		factory.setPort(Integer.parseInt(env.getProperty("server.master.port")));
 		return factory;
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(PaymentsManagerApplication.class, args);
 		new PaymentsManagerApplication().configure(new SpringApplicationBuilder(PaymentsManagerApplication.class)).run(args);
 	}
 }
