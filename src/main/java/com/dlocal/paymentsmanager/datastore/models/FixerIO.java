@@ -1,9 +1,11 @@
 package com.dlocal.paymentsmanager.datastore.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 
 import java.util.HashMap;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FixerIO {
 
     @Id
