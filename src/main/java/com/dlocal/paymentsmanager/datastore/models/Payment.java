@@ -8,9 +8,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 public class Payment {
 
     @Id
-    public Integer id;
+    public String id = "";
 
-    public String timestamp;
+    public String timestamp = String.valueOf(System.currentTimeMillis() / 1000L);
 
     public PaymentCurrency currency;
 
@@ -30,7 +30,7 @@ public class Payment {
     @Override
     public String toString() {
         return String.format(
-                "FixerIO[id='%s', currency='%s', amount='%s, transactionId='%s, merchantId='%s, paymentStatus='%s]",
+                "FixerIO[id='%s', currency='%s', amount='%s, transaction_id='%s, merchant_id='%s, paymentStatus='%s]",
                 id,
                 currency,
                 amount,
@@ -40,11 +40,11 @@ public class Payment {
         );
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

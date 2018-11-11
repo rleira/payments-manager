@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Payment {
-    public Integer id;
+    public String id;
 
     public String date;
 
@@ -14,21 +14,21 @@ public class Payment {
 
     public Double amount;
 
-    public String transactionId;
+    public String transaction_id;
 
-    public String merchantId;
+    public String merchant_id;
 
     public PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
-    public Double amountUSD;
+    public Double amount_usd;
 
     public Payment() {}
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -57,19 +57,19 @@ public class Payment {
     }
 
     public String getTransactionId() {
-        return transactionId;
+        return transaction_id;
     }
 
     public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
+        this.transaction_id = transactionId;
     }
 
     public String getMerchantId() {
-        return merchantId;
+        return merchant_id;
     }
 
     public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
+        this.merchant_id = merchantId;
     }
 
     public PaymentStatus getPaymentStatus() {
@@ -81,10 +81,10 @@ public class Payment {
     }
 
     public Double getAmountUSD() {
-        return amountUSD;
+        return amount_usd;
     }
 
     public void setAmountUSD(Double amountUSD) {
-        this.amountUSD = amountUSD;
+        this.amount_usd = amountUSD;
     }
 }

@@ -24,7 +24,7 @@ public class PaymentResource {
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getPayment(@PathParam("id") String id) {
-        Payment paymentFEModel = paymentsService.getPaymentFromId(id);
+        Payment paymentFEModel = paymentsService.getPaymentById(id);
         if (paymentFEModel != null) {
             if (paymentFEModel.getAmountUSD() == 0) {
                 return Response.status(202).build();
@@ -34,13 +34,16 @@ public class PaymentResource {
         return Response.status(404).build();
     }
 
-//    @POST
-//    @Path("/")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response addPayment(com.dlocal.paymentsmanager.web.model.Payment payment) throws IOException {
-//        com.dlocal.paymentsmanager.web.model.Payment paymentFEModel = new com.dlocal.paymentsmanager.web.model.Payment();
-//        paymentFEModel.setId(1234);
-//        return Response.status(Response.Status.CREATED).entity(merchantService.existsMerchant("id1")).build();
-//    }
+    @POST
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addPayment(Payment payment) {
+        try {
+            payment = paymentsService.addPayment(payment);
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(null).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(payment).build();
+    }
 }
