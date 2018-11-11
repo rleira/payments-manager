@@ -1,6 +1,7 @@
 package com.dlocal.paymentsmanager.web.model;
 
-import com.dlocal.paymentsmanager.datastore.PaymentStatus;
+import com.dlocal.paymentsmanager.datastore.enums.PaymentCurrency;
+import com.dlocal.paymentsmanager.datastore.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -9,7 +10,7 @@ public class Payment {
 
     public String date;
 
-    public String currency;
+    public PaymentCurrency currency;
 
     public Double amount;
 
@@ -39,11 +40,11 @@ public class Payment {
         this.date = date;
     }
 
-    public String getCurrency() {
+    public PaymentCurrency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(PaymentCurrency currency) {
         this.currency = currency;
     }
 

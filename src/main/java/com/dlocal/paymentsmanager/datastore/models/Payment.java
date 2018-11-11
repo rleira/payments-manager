@@ -1,6 +1,7 @@
 package com.dlocal.paymentsmanager.datastore.models;
 
-import com.dlocal.paymentsmanager.datastore.PaymentStatus;
+import com.dlocal.paymentsmanager.datastore.enums.PaymentCurrency;
+import com.dlocal.paymentsmanager.datastore.enums.PaymentStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -11,7 +12,7 @@ public class Payment {
 
     public String timestamp;
 
-    public String currency;
+    public PaymentCurrency currency;
 
     public Double amount;
 
@@ -55,11 +56,11 @@ public class Payment {
         this.timestamp = timestamp;
     }
 
-    public String getCurrency() {
+    public PaymentCurrency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(PaymentCurrency currency) {
         this.currency = currency;
     }
 
