@@ -33,12 +33,12 @@ public class SchedulerConfig {
         if (MasterSlaveService.isMaster()) {
             threadPoolTaskScheduler.schedule(
                     fixerIOTaskFactory.getFixerIORunnable(),
-                    new CronTrigger("*/1 * * * * ?")
+                    new CronTrigger("*/30 * * * * ?")
             );
         }
         threadPoolTaskScheduler.schedule(
                 paymentProcessTask.getPaymentProcessRunnable(),
-                new CronTrigger("*/1 * * * * ?")
+                new CronTrigger("*/30 * * * * ?")
         );
         return threadPoolTaskScheduler;
     }
