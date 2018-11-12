@@ -63,7 +63,7 @@ public class PaymentsService {
         payment.setTransactionId(paymentFEModel.getTransaction_id());
 
         if (PaymentCurrency.USD.equals(paymentFEModel.getCurrency())) {
-            payment.setAmountUSD(paymentFEModel.getAmount_usd());
+            payment.setAmountUSD(paymentFEModel.getAmount());
         }
 
         return payment;

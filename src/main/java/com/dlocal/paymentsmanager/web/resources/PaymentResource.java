@@ -27,7 +27,7 @@ public class PaymentResource {
     public Response getPayment(@PathParam("id") String id) {
         Payment paymentFEModel = paymentsService.getPaymentById(id);
         if (paymentFEModel != null) {
-            if (paymentFEModel.getAmount_usd() == 0) {
+            if (paymentFEModel.getAmount_usd() == null || paymentFEModel.getAmount_usd() == 0) {
                 return Response.status(202).build();
             }
             return Response.status(200).entity(paymentFEModel).build();

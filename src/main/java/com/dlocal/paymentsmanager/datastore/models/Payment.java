@@ -12,12 +12,16 @@ public class Payment {
 
     public Long timestamp = System.currentTimeMillis() / 1000L;
 
+    @Indexed
     public PaymentCurrency currency;
 
+    @Indexed
     public Double amount;
 
+    @Indexed
     public String transactionId;
 
+    @Indexed
     public String merchantId;
 
     @Indexed
