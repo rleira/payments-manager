@@ -1,6 +1,7 @@
 package com.dlocal.paymentsmanager.web.resources;
 
 import com.dlocal.paymentsmanager.services.PaymentsService;
+import com.dlocal.paymentsmanager.web.model.ErrorModel;
 import com.dlocal.paymentsmanager.web.model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +27,7 @@ public class PaymentResource {
     public Response getPayment(@PathParam("id") String id) {
         Payment paymentFEModel = paymentsService.getPaymentById(id);
         if (paymentFEModel != null) {
-            if (paymentFEModel.getAmountUSD() == 0) {
+            if (paymentFEModel.getAmount_usd() == 0) {
                 return Response.status(202).build();
             }
             return Response.status(200).entity(paymentFEModel).build();
@@ -42,7 +43,8 @@ public class PaymentResource {
         try {
             payment = paymentsService.addPayment(payment);
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(null).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorModel().setErrorMessage(e.getMessage())).build();
         }
         return Response.status(Response.Status.CREATED).entity(payment).build();
     }

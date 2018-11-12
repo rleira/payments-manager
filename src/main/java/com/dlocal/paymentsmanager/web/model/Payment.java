@@ -56,19 +56,19 @@ public class Payment {
         this.amount = amount;
     }
 
-    public String getTransactionId() {
+    public String getTransaction_id() {
         return transaction_id;
     }
 
-    public void setTransactionId(String transactionId) {
+    public void setTransaction_id(String transactionId) {
         this.transaction_id = transactionId;
     }
 
-    public String getMerchantId() {
+    public String getMerchant_id() {
         return merchant_id;
     }
 
-    public void setMerchantId(String merchantId) {
+    public void setMerchant_id(String merchantId) {
         this.merchant_id = merchantId;
     }
 
@@ -80,11 +80,11 @@ public class Payment {
         this.paymentStatus = paymentStatus;
     }
 
-    public Double getAmountUSD() {
+    public Double getAmount_usd() {
         return amount_usd;
     }
 
-    public void setAmountUSD(Double amountUSD) {
+    public void setAmount_usd(Double amountUSD) {
         this.amount_usd = amountUSD;
     }
 }

@@ -3,6 +3,7 @@ package com.dlocal.paymentsmanager.services;
 import com.dlocal.paymentsmanager.datastore.dal.PaymentRepository;
 import com.dlocal.paymentsmanager.datastore.enums.PaymentCurrency;
 import com.dlocal.paymentsmanager.datastore.models.Payment;
+import org.eclipse.jetty.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +29,13 @@ public class PaymentsService {
     public com.dlocal.paymentsmanager.web.model.Payment addPayment(
             com.dlocal.paymentsmanager.web.model.Payment paymentFEModel
     ) throws Exception{
-        if (!merchantService.existsMerchant(paymentFEModel.getMerchantId())) {
+        if (!merchantService.existsMerchant(paymentFEModel.getMerchant_id())) {
             throw new Exception("Merchant does not exist");
         }
         Payment newPayment = paymentFEToPayment(paymentFEModel);
+        if (paymentExists(newPayment)) {
+            throw new Exception("Payment already exists");
+        }
         newPayment = paymentsRepository.save(newPayment);
         paymentFEModel.setId(newPayment.getId());
         return paymentFEModel;
@@ -42,9 +46,9 @@ public class PaymentsService {
         com.dlocal.paymentsmanager.web.model.Payment paymentFEModel = new com.dlocal.paymentsmanager.web.model.Payment();
         paymentFEModel.setId(payment.getId());
         paymentFEModel.setDate(payment.getTimestamp());
-        paymentFEModel.setMerchantId(payment.getMerchantId());
-        paymentFEModel.setTransactionId(payment.getTransactionId());
-        paymentFEModel.setAmountUSD(payment.getAmountUSD());
+        paymentFEModel.setMerchant_id(payment.getMerchantId());
+        paymentFEModel.setTransaction_id(payment.getTransactionId());
+        paymentFEModel.setAmount_usd(payment.getAmountUSD());
         paymentFEModel.setPaymentStatus(payment.getPaymentStatus());
 
         return paymentFEModel;
@@ -55,13 +59,22 @@ public class PaymentsService {
 
         payment.setCurrency(paymentFEModel.getCurrency());
         payment.setAmount(paymentFEModel.getAmount());
-        payment.setMerchantId(paymentFEModel.getMerchantId());
-        payment.setTransactionId(paymentFEModel.getTransactionId());
+        payment.setMerchantId(paymentFEModel.getMerchant_id());
+        payment.setTransactionId(paymentFEModel.getTransaction_id());
 
         if (PaymentCurrency.USD.equals(paymentFEModel.getCurrency())) {
-            payment.setAmountUSD(paymentFEModel.getAmountUSD());
+            payment.setAmountUSD(paymentFEModel.getAmount_usd());
         }
 
         return payment;
+    }
+
+    private boolean paymentExists (Payment newPayment) {
+        String paymentId = StringUtil.isNotBlank(newPayment.getId()) ? newPayment.getId() : buildPaymentId(newPayment);
+        return StringUtil.isNotBlank(paymentId) && paymentsRepository.findById(paymentId).isPresent();
+    }
+
+    public String buildPaymentId (Payment payment) {
+        return payment.getMerchantId() + payment.getTransactionId();
     }
 }
