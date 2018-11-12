@@ -36,7 +36,7 @@ public class PaymentsManagerApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		MasterSlaveService.setMaster(args.length > 0 && args[0].matches("--master"));
-		System.out.println("Is cluster Master: " + MasterSlaveService.isMaster());
+		System.out.println(MasterSlaveService.isMaster() ? "I'm the cluster Master" : "I'm just a worker");
 
 		new PaymentsManagerApplication().configure(new SpringApplicationBuilder(PaymentsManagerApplication.class)).run(args);
 	}
