@@ -45,7 +45,7 @@ public class PaymentsService {
     private com.dlocal.paymentsmanager.web.model.Payment paymentToPaymentFE (Payment payment) {
         com.dlocal.paymentsmanager.web.model.Payment paymentFEModel = new com.dlocal.paymentsmanager.web.model.Payment();
         paymentFEModel.setId(payment.getId());
-        paymentFEModel.setDate(payment.getTimestamp());
+        paymentFEModel.setDate(payment.getTimestamp().toString());
         paymentFEModel.setMerchant_id(payment.getMerchantId());
         paymentFEModel.setTransaction_id(payment.getTransactionId());
         paymentFEModel.setAmount_usd(payment.getAmountUSD());

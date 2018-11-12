@@ -10,7 +10,7 @@ public class Payment {
     @Id
     public String id = "";
 
-    public String timestamp = String.valueOf(System.currentTimeMillis() / 1000L);
+    public Long timestamp = System.currentTimeMillis() / 1000L;
 
     public PaymentCurrency currency;
 
@@ -48,11 +48,11 @@ public class Payment {
         this.id = id;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 

@@ -24,4 +24,10 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, S
 
     public Iterable<Payment> findPaymentsByCurrencyOrderByAmountAsc(PaymentCurrency currency);
     public Iterable<Payment> findPaymentsByCurrencyOrderByAmountDesc(PaymentCurrency currency);
+
+    public Iterable<Payment> findPaymentsByMerchantIdAndTimestampBetween(
+            String merchantId,
+            int from,
+            int to
+    );
 }
