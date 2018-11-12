@@ -75,6 +75,6 @@ public class PaymentsService {
     }
 
     public String buildPaymentId (Payment payment) {
-        return payment.getMerchantId() + payment.getTransactionId();
+        return payment.getMerchantId().replaceAll("-", "") + "-" + payment.getTransactionId();
     }
 }
