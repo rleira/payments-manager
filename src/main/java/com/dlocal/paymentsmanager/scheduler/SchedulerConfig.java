@@ -1,7 +1,7 @@
 package com.dlocal.paymentsmanager.scheduler;
 
-import com.dlocal.paymentsmanager.scheduler.task.FixerIOTask;
-import com.dlocal.paymentsmanager.scheduler.task.PaymentProcessTask;
+import com.dlocal.paymentsmanager.scheduler.task.FixerIOTaskFactory;
+import com.dlocal.paymentsmanager.scheduler.task.PaymentProcessTaskFactory;
 import com.dlocal.paymentsmanager.services.MasterSlaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +18,12 @@ public class SchedulerConfig {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private FixerIOTaskFactory fixerIOTaskFactory;
+
+    @Autowired
+    private PaymentProcessTaskFactory paymentProcessTask;
+
     @Bean
     public ThreadPoolTaskScheduler threadPoolTaskScheduler(){
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
@@ -25,9 +31,15 @@ public class SchedulerConfig {
         threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
         threadPoolTaskScheduler.initialize();
         if (MasterSlaveService.isMaster()) {
-            threadPoolTaskScheduler.schedule(new FixerIOTask(), new CronTrigger("*/30 * * * * ?"));
+            threadPoolTaskScheduler.schedule(
+                    fixerIOTaskFactory.getFixerIORunnable(),
+                    new CronTrigger("*/1 * * * * ?")
+            );
         }
-        threadPoolTaskScheduler.schedule(new PaymentProcessTask(), new CronTrigger("*/30 * * * * ?"));
+        threadPoolTaskScheduler.schedule(
+                paymentProcessTask.getPaymentProcessRunnable(),
+                new CronTrigger("*/1 * * * * ?")
+        );
         return threadPoolTaskScheduler;
     }
 }
