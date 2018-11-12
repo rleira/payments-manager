@@ -3,8 +3,10 @@ package com.dlocal.paymentsmanager.datastore.models;
 import com.dlocal.paymentsmanager.datastore.enums.PaymentCurrency;
 import com.dlocal.paymentsmanager.datastore.enums.PaymentStatus;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+@CompoundIndex(def = "{'merchantId':1, 'currency':1, 'transactionId':1, 'amountUSD':1}", name = "filter_index")
 public class Payment {
 
     @Id
@@ -15,7 +17,6 @@ public class Payment {
     @Indexed
     public PaymentCurrency currency;
 
-    @Indexed
     public Double amount;
 
     @Indexed
@@ -27,6 +28,7 @@ public class Payment {
     @Indexed
     public PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
+    @Indexed
     public Double amountUSD;
 
     public Payment() {}

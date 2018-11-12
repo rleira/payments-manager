@@ -49,7 +49,7 @@ public class PaymentsService {
         paymentFEModel.setMerchant_id(payment.getMerchantId());
         paymentFEModel.setTransaction_id(payment.getTransactionId());
         paymentFEModel.setAmount_usd(payment.getAmountUSD());
-        paymentFEModel.setPaymentStatus(payment.getPaymentStatus());
+        paymentFEModel.setStatus(payment.getPaymentStatus());
 
         return paymentFEModel;
     }

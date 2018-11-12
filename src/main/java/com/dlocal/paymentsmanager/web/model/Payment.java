@@ -18,7 +18,7 @@ public class Payment {
 
     public String merchant_id;
 
-    public PaymentStatus paymentStatus = PaymentStatus.PENDING;
+    public PaymentStatus status = PaymentStatus.PENDING;
 
     public Double amount_usd;
 
@@ -72,12 +72,12 @@ public class Payment {
         this.merchant_id = merchantId;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public PaymentStatus getStatus() {
+        return status;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
     }
 
     public Double getAmount_usd() {
