@@ -104,7 +104,7 @@ public class FixerIOTaskFactory {
                     .stream()
                     .forEach(pendingPayment -> {
                         Double currencyValue = fixerIO.getRates().get(pendingPayment.getCurrency().toString());
-                        pendingPayment.setAmountUSD((pendingPayment.getAmount()/usdValue)*currencyValue);
+                        pendingPayment.setAmountUSD((pendingPayment.getAmount()/currencyValue)*usdValue);
                         paymentsRepository.save(pendingPayment);
                         System.out.println("FixerIOTask, pendingPayment: " + pendingPayment);
                     });
