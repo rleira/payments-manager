@@ -1,14 +1,18 @@
 package com.dlocal.paymentsmanager.services;
 
+import com.dlocal.paymentsmanager.datastore.dal.PaymentRepository;
+import com.dlocal.paymentsmanager.datastore.models.Payment;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.eclipse.jetty.util.StringUtil;
+import org.glassfish.jersey.internal.guava.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class MerchantService {
@@ -21,6 +25,9 @@ public class MerchantService {
     @Autowired
     private HTTPPoolService httpPoolService;
 
+    @Autowired
+    private PaymentRepository paymentRepository;
+
     public Boolean existsMerchant (String merchantId) {
         HttpResponse response = null;
         try {
@@ -30,6 +37,25 @@ public class MerchantService {
             return false;
         }
         return response.getStatusLine().getStatusCode() == Response.Status.OK.getStatusCode();
+    }
+
+    public Double getBalance (String merchantId) {
+        List<Payment> merchantPayments = Lists.newArrayList(
+                paymentRepository.findPaymentsByMerchantIdOrderByAmountAsc(merchantId).iterator()
+        );
+        return merchantPayments
+                .stream()
+                .mapToDouble(payment -> {
+                    switch (payment.getPaymentStatus()) {
+                        case REJECTED:
+                            return -payment.getAmountUSD();
+                        case PAID:
+                            return payment.getAmountUSD();
+                        default:
+                            return 0;
+                    }
+                })
+                .sum();
     }
 
     private String buildGetMerchantURL (String merchantId) {

@@ -8,5 +8,6 @@ public class RestConfiguration extends ResourceConfig {
 
     RestConfiguration () {
         register(PaymentResource.class);
+        register(MerchantResource.class);
     }
 }
