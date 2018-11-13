@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-@CompoundIndex(def = "{'merchantId':1, 'currency':1, 'transactionId':1, 'amountUSD':1}", name = "filter_index")
+@CompoundIndex(def = "{'merchantId':1, 'paymentStatus':1, 'currency':1, 'transactionId':1, 'amountUSD':1}", name = "filter_index")
 public class Payment {
 
     @Id
@@ -36,13 +36,14 @@ public class Payment {
     @Override
     public String toString() {
         return String.format(
-                "FixerIO[id='%s', currency='%s', amount='%s, transaction_id='%s, merchant_id='%s, paymentStatus='%s]",
+                "FixerIO[id='%s', currency='%s', amount='%s, transaction_id='%s, merchant_id='%s, paymentStatus='%s, amountUSD='%s]",
                 id,
                 currency,
                 amount,
                 transactionId,
                 merchantId,
-                paymentStatus
+                paymentStatus,
+                amountUSD
         );
     }
 

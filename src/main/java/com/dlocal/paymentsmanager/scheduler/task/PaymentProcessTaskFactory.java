@@ -28,15 +28,17 @@ public class PaymentProcessTaskFactory {
 
         @Override
         public void run() {
-            System.out.println("PaymentProcessTask runnnnn!!");
+            System.out.println("PaymentProcessTask running!");
             Iterator<Payment> paymentIterator = paymentsRepository.findPaymentsByPaymentStatus(PaymentStatus.PENDING).iterator();
             while (paymentIterator.hasNext()) {
                 Payment payment = paymentIterator.next();
                 if (payment.getAmountUSD() != null && payment.getAmountUSD() > 0) {
                     payment.setPaymentStatus(Math.random() < successProbability ? PaymentStatus.PAID : PaymentStatus.REJECTED);
                     paymentsRepository.save(payment);
+                    System.out.println("PaymentProcessTask, payment: " + payment);
                 }
             }
+            System.out.println("PaymentProcessTask ending!");
         }
     }
 }

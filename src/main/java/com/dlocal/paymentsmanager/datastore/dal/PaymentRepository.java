@@ -3,15 +3,19 @@ package com.dlocal.paymentsmanager.datastore.dal;
 import com.dlocal.paymentsmanager.datastore.enums.PaymentCurrency;
 import com.dlocal.paymentsmanager.datastore.enums.PaymentStatus;
 import com.dlocal.paymentsmanager.datastore.models.Payment;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PaymentRepository extends PagingAndSortingRepository<Payment, String> {
 
-    @Query
     public Iterable<Payment> findPaymentsByPaymentStatus(PaymentStatus paymentStatus);
+
+    public Iterable<Payment> findPaymentsByPaymentStatusAndAmountUSDAndCurrencyNotOrderByTimestampAsc(
+            PaymentStatus paymentStatus,
+            Double amountUSD,
+            PaymentCurrency paymentCurrency
+    );
 
     public Iterable<Payment> findPaymentsByMerchantIdOrderByAmountAsc(String merchantId);
     public Iterable<Payment> findPaymentsByMerchantIdOrderByAmountDesc(String merchantId);
