@@ -1,6 +1,7 @@
 package com.dlocal.paymentsmanager.web.resources;
 
 import com.dlocal.paymentsmanager.services.MerchantService;
+import com.dlocal.paymentsmanager.web.model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -14,10 +15,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "merchants")
 @Path("/merchants")
 @Produces(MediaType.APPLICATION_JSON)
-public class MerchantResource {
+public class MerchantResource extends BaseResource {
 
     @Autowired
     private MerchantService merchantService;
+
+    @OPTIONS
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response optionsGetPayment(Payment payment) {
+        return buildResponse(Response.status(Response.Status.OK));
+    }
 
     @GET
     @Path("/{id}/balance")
@@ -26,6 +35,6 @@ public class MerchantResource {
         if (!merchantService.existsMerchant(id)) {
             return Response.status(404).build();
         }
-        return Response.status(200).entity(merchantService.getBalance(id)).build();
+        return buildResponse(Response.status(200).entity(merchantService.getBalance(id)));
     }
 }
