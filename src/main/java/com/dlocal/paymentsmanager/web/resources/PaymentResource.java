@@ -1,8 +1,10 @@
 package com.dlocal.paymentsmanager.web.resources;
 
+import com.dlocal.paymentsmanager.datastore.enums.PaymentCurrency;
 import com.dlocal.paymentsmanager.services.PaymentsService;
 import com.dlocal.paymentsmanager.web.model.ErrorModel;
 import com.dlocal.paymentsmanager.web.model.Payment;
+import com.dlocal.paymentsmanager.web.model.Payments;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -11,6 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "payments")
@@ -44,7 +47,6 @@ public class PaymentResource extends BaseResource {
         return buildResponse(Response.status(404));
     }
 
-
     @OPTIONS
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -65,5 +67,29 @@ public class PaymentResource extends BaseResource {
                     .entity(new ErrorModel().setErrorMessage(e.getMessage())));
         }
         return buildResponse(Response.status(Response.Status.CREATED).entity(payment));
+    }
+
+    @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPayments(
+            @QueryParam("currency") PaymentCurrency currency,
+            @QueryParam("amount") Double amount,
+            @QueryParam("transactionId") String transactionId,
+            @QueryParam("merchantId") String merchantId
+    ) {
+        List<Payment> payments;
+        try {
+            payments = paymentsService.getPayments(
+                    currency,
+                    amount,
+                    transactionId,
+                    merchantId
+            );
+        } catch (Exception e) {
+            return buildResponse(Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorModel().setErrorMessage(e.getMessage())));
+        }
+        return buildResponse(Response.status(Response.Status.OK).entity(new Payments(payments)));
     }
 }

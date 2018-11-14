@@ -4,10 +4,13 @@ import com.dlocal.paymentsmanager.datastore.dal.PaymentRepository;
 import com.dlocal.paymentsmanager.datastore.enums.PaymentCurrency;
 import com.dlocal.paymentsmanager.datastore.models.Payment;
 import org.eclipse.jetty.util.StringUtil;
+import org.glassfish.jersey.internal.guava.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PaymentsService {
@@ -24,6 +27,30 @@ public class PaymentsService {
             return paymentToPaymentFE(PaymentOpt.get());
         }
         return null;
+    }
+
+    public List<com.dlocal.paymentsmanager.web.model.Payment> getPayments(
+            PaymentCurrency paymentCurrency,
+            Double amountUSD,
+            String transactionId,
+            String merchantId
+    ) throws Exception{
+        List<Payment> queryResults;
+        if (paymentCurrency == null && amountUSD == null &&
+                StringUtil.isBlank(transactionId) && StringUtil.isBlank(merchantId)) {
+            queryResults = Lists.newArrayList(paymentsRepository.findAll());
+        }
+        else {
+            queryResults = Lists.newArrayList(paymentsRepository.findPaymentsByCurrencyOrAmountOrTransactionIdOrMerchantIdOrderByAmountDesc(
+                    paymentCurrency,
+                    amountUSD,
+                    transactionId,
+                    merchantId
+            ));
+        }
+        return queryResults.stream()
+                .map(payment -> paymentToPaymentFEFull(payment))
+                .collect(Collectors.toList());
     }
 
     public com.dlocal.paymentsmanager.web.model.Payment addPayment(
@@ -49,6 +76,20 @@ public class PaymentsService {
         paymentFEModel.setMerchant_id(payment.getMerchantId());
         paymentFEModel.setTransaction_id(payment.getTransactionId());
         paymentFEModel.setAmount_usd(payment.getAmountUSD());
+        paymentFEModel.setStatus(payment.getPaymentStatus());
+
+        return paymentFEModel;
+    }
+
+    private com.dlocal.paymentsmanager.web.model.Payment paymentToPaymentFEFull (Payment payment) {
+        com.dlocal.paymentsmanager.web.model.Payment paymentFEModel = new com.dlocal.paymentsmanager.web.model.Payment();
+        paymentFEModel.setId(payment.getId());
+        paymentFEModel.setDate(payment.getTimestamp().toString());
+        paymentFEModel.setCurrency(payment.getCurrency());
+        paymentFEModel.setMerchant_id(payment.getMerchantId());
+        paymentFEModel.setTransaction_id(payment.getTransactionId());
+        paymentFEModel.setAmount_usd(payment.getAmountUSD());
+        paymentFEModel.setAmount(payment.getAmount());
         paymentFEModel.setStatus(payment.getPaymentStatus());
 
         return paymentFEModel;
